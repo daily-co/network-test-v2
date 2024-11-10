@@ -7,7 +7,15 @@ import {
   DailyNetworkConnectivityTestStats,
   DailyWebsocketConnectivityTestResults,
 } from "@daily-co/daily-js";
-import { Button, Card, Box, Flex, Heading, Section } from "@radix-ui/themes";
+import {
+  Button,
+  Card,
+  Box,
+  Flex,
+  Heading,
+  Section,
+  Code,
+} from "@radix-ui/themes";
 import CallQuality from "./CallQuality";
 import Network from "./Network";
 import Websockets from "./Websockets";
@@ -31,6 +39,15 @@ export default function App() {
 
   const call = useDaily();
 
+  function copyResults() {
+    navigator.clipboard.writeText(
+      JSON.stringify({
+        network: networkTestResults,
+        websockets: websocketTestResults,
+        call: callQualityResults,
+      })
+    );
+  }
   async function start() {
     console.log("starting test");
     setAppState("starting");
@@ -202,15 +219,8 @@ export default function App() {
           </Card>
         </Box>
       </Flex>
-      <Section>
-        <Heading as="h4">JSON results (Click to copy?)</Heading>
-        <div>
-          {JSON.stringify({
-            network: networkTestResults,
-            websockets: websocketTestResults,
-            call: callQualityResults,
-          })}
-        </div>
+      <Section align="center">
+        <Button onClick={copyResults()}>Copy Full Results to Clipboard</Button>
       </Section>
     </>
   );

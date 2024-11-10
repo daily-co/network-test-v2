@@ -1,5 +1,5 @@
 import { DailyCallQualityTestResults } from "@daily-co/daily-js";
-import { Progress, Badge, DataList, Button, Box } from "@radix-ui/themes";
+import { Progress, Badge, DataList, Button, Box, Code } from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
 
 export default function CallQuality({
@@ -118,7 +118,9 @@ export default function CallQuality({
           <>
             <DataList.Item>
               <DataList.Label minWidth="88px">Error Message</DataList.Label>
-              <DataList.Value>{callQualityResults.errorMsg}</DataList.Value>
+              <DataList.Value>
+                <Code>{callQualityResults.errorMsg}</Code>
+              </DataList.Value>
             </DataList.Item>
             <DataList.Item>
               <DataList.Label minWidth="88px">Error Data</DataList.Label>
