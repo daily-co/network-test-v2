@@ -67,6 +67,7 @@ export default function App() {
     if (cq) {
       setCallQualityResults(cq);
     }
+    await call?.destroy();
     setAppState("completed");
   }
 
