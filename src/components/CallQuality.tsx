@@ -73,14 +73,16 @@ export default function CallQuality({
             <DataList.Item>
               <DataList.Label minWidth="88px">Max RTT</DataList.Label>
               <DataList.Value>
-                {Math.round(callQualityResults.data.maxRoundTripTime * 1000.0)}
+                {callQualityResults.data.maxRoundTripTime &&
+                  Math.round(callQualityResults.data.maxRoundTripTime * 1000.0)}
                 ms
               </DataList.Value>
             </DataList.Item>
             <DataList.Item>
               <DataList.Label minWidth="88px">Avg RTT</DataList.Label>
               <DataList.Value>
-                {Math.round(callQualityResults.data.avgRoundTripTime * 1000.0)}
+                {callQualityResults.data.avgRoundTripTime &&
+                  Math.round(callQualityResults.data.avgRoundTripTime * 1000.0)}
                 ms
               </DataList.Value>
             </DataList.Item>
@@ -89,9 +91,10 @@ export default function CallQuality({
                 Avg Send Packet Loss
               </DataList.Label>
               <DataList.Value>
-                {Math.round(
-                  callQualityResults.data.avgSendPacketLoss * 1000.0
-                ) / 10.0}
+                {callQualityResults.data.avgSendPacketLoss &&
+                  Math.round(
+                    callQualityResults.data.avgSendPacketLoss * 1000.0
+                  ) / 10.0}
                 %
               </DataList.Value>
             </DataList.Item>
@@ -100,15 +103,17 @@ export default function CallQuality({
                 Avg Available Outgoing Bitrate
               </DataList.Label>
               <DataList.Value>
-                {formatBitrate(
-                  callQualityResults.data.avgAvailableOutgoingBitrate
-                )}
+                {callQualityResults.data.avgAvailableOutgoingBitrate &&
+                  formatBitrate(
+                    callQualityResults.data.avgAvailableOutgoingBitrate
+                  )}
               </DataList.Value>
             </DataList.Item>
             <DataList.Item>
               <DataList.Label minWidth="88px">Avg Sent Bitrate</DataList.Label>
               <DataList.Value>
-                {formatBitrate(callQualityResults.data.avgSendBitsPerSecond)}
+                {callQualityResults.data.avgSendBitsPerSecond &&
+                  formatBitrate(callQualityResults.data.avgSendBitsPerSecond)}
               </DataList.Value>
             </DataList.Item>
           </>
@@ -152,7 +157,7 @@ export default function CallQuality({
   return (
     <>
       <Progress duration="30s" />
-      <Box align="center" style={{ marginTop: "1em" }}>
+      <Box style={{ textAlign: "center", marginTop: "1em" }}>
         <Button onClick={cancelTest}>Cancel</Button>
       </Box>
     </>

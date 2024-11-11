@@ -15,11 +15,11 @@ export default function Home() {
       <DailyProvider callObject={callObject} jotaiStore={jotaiStore}>
         <Container size="3" id="app">
           <Flex direction="column" gap="3">
-            <Section size="2" align="center">
-              <Heading>Daily Network Test</Heading>
+            <Section size="2">
+              <Heading align="center">Daily Network Test</Heading>
             </Section>
 
-            <Section size="2" align="center">
+            <Section size="2" style={{ textAlign: "center" }}>
               <App />
             </Section>
           </Flex>

@@ -56,7 +56,7 @@ export default function Network({
   return (
     <>
       <Progress duration="30s" />
-      <Box align="center" style={{ marginTop: "1em" }}>
+      <Box style={{ textAlign: "center", marginTop: "1em" }}>
         <Button onClick={cancelTest}>Cancel</Button>
       </Box>
     </>

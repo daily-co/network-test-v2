@@ -83,7 +83,7 @@ export default function Websockets({
   return (
     <>
       <Progress duration="10s" />
-      <Box align="center" style={{ marginTop: "1em" }}>
+      <Box style={{ textAlign: "center", marginTop: "1em" }}>
         <Button onClick={cancelTest}>Cancel</Button>
       </Box>
     </>

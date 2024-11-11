@@ -7,15 +7,7 @@ import {
   DailyNetworkConnectivityTestStats,
   DailyWebsocketConnectivityTestResults,
 } from "@daily-co/daily-js";
-import {
-  Button,
-  Card,
-  Box,
-  Flex,
-  Heading,
-  Section,
-  Code,
-} from "@radix-ui/themes";
+import { Button, Card, Box, Flex, Heading, Section } from "@radix-ui/themes";
 import CallQuality from "./CallQuality";
 import Network from "./Network";
 import Websockets from "./Websockets";
@@ -219,8 +211,8 @@ export default function App() {
           </Card>
         </Box>
       </Flex>
-      <Section align="center">
-        <Button onClick={copyResults()}>Copy Full Results to Clipboard</Button>
+      <Section style={{ textAlign: "center" }}>
+        <Button onClick={copyResults}>Copy Full Results to Clipboard</Button>
       </Section>
     </>
   );
