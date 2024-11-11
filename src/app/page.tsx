@@ -16,7 +16,9 @@ export default function Home() {
         <Container size="3" id="app">
           <Flex direction="column" gap="3">
             <Section size="2">
-              <Heading align="center">Daily Network Test</Heading>
+              <Heading align="center" as="h1">
+                Daily Network Test
+              </Heading>
             </Section>
 
             <Section size="2" style={{ textAlign: "center" }}>

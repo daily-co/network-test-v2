@@ -80,7 +80,7 @@ export default function CallQuality({
       case "warning":
       case "bad":
         return (
-          <>
+          <DataList.Root>
             <DataList.Item>
               <DataList.Label minWidth="88px">Max RTT</DataList.Label>
               <DataList.Value>
@@ -127,11 +127,11 @@ export default function CallQuality({
                   formatBitrate(callQualityResults.data.avgSendBitsPerSecond)}
               </DataList.Value>
             </DataList.Item>
-          </>
+          </DataList.Root>
         );
       case "failed":
         return (
-          <>
+          <DataList.Root>
             <DataList.Item>
               <DataList.Label minWidth="88px">Error Message</DataList.Label>
               <DataList.Value>
@@ -144,7 +144,7 @@ export default function CallQuality({
                 <Code>{JSON.stringify(callQualityResults.error, null, 4)}</Code>
               </DataList.Value>
             </DataList.Item>
-          </>
+          </DataList.Root>
         );
       default:
         return <></>;

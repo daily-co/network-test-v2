@@ -41,14 +41,12 @@ export default function App() {
     );
   }
   async function start() {
-    console.log("starting test");
     setAppState("starting");
     await call?.startCamera();
     setAppState("running-network");
     const videoTrack = call?.participants().local.tracks.video.persistentTrack;
     if (videoTrack) {
       const nt = await call?.testNetworkConnectivity(videoTrack);
-      console.log({ nt });
       if (nt) {
         setNetworkTestResults(nt);
       }
@@ -56,14 +54,12 @@ export default function App() {
 
     setAppState("running-websocket");
     const ws = await call?.testWebsocketConnectivity();
-    console.log({ ws });
     if (ws) {
       setWebsocketTestResults(ws);
     }
     setAppState("running-call");
     //await call?.preAuth({ url: "https://chad-hq.daily.co/howdy" });
     const cq = await call?.testCallQuality();
-    console.log({ cq });
     if (cq) {
       setCallQualityResults(cq);
     }

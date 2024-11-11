@@ -17,15 +17,14 @@ export default function Websockets({
 
   function listRegions(regions: string[] | undefined) {
     if (Array.isArray(regions) && regions.length > 0) {
-      const r = regions.map((r, i) => {
+      const rr = regions.map((r, i) => {
         return (
-          <>
+          <div key={i}>
             <Code>{r}</Code>
-            <br />
-          </>
+          </div>
         );
       });
-      return <div>{r}</div>;
+      return <div>{rr}</div>;
     } else {
       return (
         <div>
@@ -37,7 +36,7 @@ export default function Websockets({
 
   function extraData() {
     return (
-      <>
+      <DataList.Root>
         <DataList.Item>
           <DataList.Label minWidth="80px">Passed Regions</DataList.Label>
           <DataList.Value>
@@ -56,7 +55,7 @@ export default function Websockets({
             {listRegions(websocketTestResults?.abortedRegions)}
           </DataList.Value>
         </DataList.Item>
-      </>
+      </DataList.Root>
     );
   }
 
