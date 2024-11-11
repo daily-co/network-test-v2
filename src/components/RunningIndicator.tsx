@@ -1,10 +1,7 @@
 import {
   Progress,
-  Badge,
-  DataList,
   Button,
   Box,
-  Code,
   Flex,
   Text,
   ProgressProps,

@@ -1,5 +1,5 @@
 import { DailyWebsocketConnectivityTestResults } from "@daily-co/daily-js";
-import { Progress, Badge, DataList, Button, Code, Box } from "@radix-ui/themes";
+import { DataList, Code } from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
 import RunningIndicator from "./RunningIndicator";
 import TestResults from "./TestResults";

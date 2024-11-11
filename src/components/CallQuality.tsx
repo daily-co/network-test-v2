@@ -1,14 +1,5 @@
 import { DailyCallQualityTestResults } from "@daily-co/daily-js";
-import {
-  Progress,
-  Badge,
-  DataList,
-  Button,
-  Box,
-  Code,
-  Flex,
-  Text,
-} from "@radix-ui/themes";
+import { DataList, Code } from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
 import RunningIndicator from "./RunningIndicator";
 import TestResults from "./TestResults";
@@ -22,46 +13,6 @@ export default function CallQuality({
 
   function cancelTest() {
     call?.stopTestCallQuality();
-  }
-  function resultBadge(result: string) {
-    switch (result) {
-      case "good":
-        return (
-          <Badge color="jade" variant="soft" radius="full">
-            good
-          </Badge>
-        );
-      case "bad":
-        return (
-          <Badge color="tomato" variant="soft" radius="full">
-            bad
-          </Badge>
-        );
-      case "failed":
-        return (
-          <Badge color="tomato" variant="soft" radius="full">
-            failed
-          </Badge>
-        );
-      case "warning":
-        return (
-          <Badge color="orange" variant="soft" radius="full">
-            warning
-          </Badge>
-        );
-      case "aborted":
-        return (
-          <Badge color="gray" variant="soft" radius="full">
-            canceled
-          </Badge>
-        );
-      default:
-        return (
-          <Badge color="gray" variant="soft" radius="full">
-            unknown
-          </Badge>
-        );
-    }
   }
 
   function formatBitrate(b: number) {

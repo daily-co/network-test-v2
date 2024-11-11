@@ -1,13 +1,4 @@
-import {
-  Progress,
-  Badge,
-  DataList,
-  Button,
-  Code,
-  Box,
-  Text,
-  Flex,
-} from "@radix-ui/themes";
+import { Badge, Box, Text, Flex } from "@radix-ui/themes";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as Separator from "@radix-ui/react-separator";
@@ -24,8 +15,8 @@ export default function TestResults({ result, extraData }: TestResultProps) {
       good: "jade",
       bad: "tomato",
       warning: "orange",
-    } as any;
-    let color = colors[result] || "gray";
+    };
+    const color = colors[result] || "gray";
     return (
       <Badge color={color} variant="soft" size="3">
         <Text style={{ fontSize: "1.2em" }}>{result}</Text>

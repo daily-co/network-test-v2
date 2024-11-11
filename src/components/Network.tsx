@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { DailyNetworkConnectivityTestStats } from "@daily-co/daily-js";
 
 import { useDaily } from "@daily-co/daily-react";
