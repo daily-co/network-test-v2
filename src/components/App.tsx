@@ -75,9 +75,9 @@ export default function App() {
       <>
         <div>
           This page runs a series of tests to characterize your browser and
-          network's ability to connect to Daily calls. It needs to access your
-          camera in order to provide a video stream to measure network
-          performance, but your video isn't viewed or stored anywhere.
+          network&#39;s ability to connect to Daily calls. It needs to access
+          your camera in order to provide a video stream to measure network
+          performance, but your video isn&#39;t viewed or stored anywhere.
         </div>
         <div style={{ marginTop: "2em" }}>
           <Button onClick={start}>Run Test</Button>
