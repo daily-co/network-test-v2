@@ -1,6 +1,17 @@
 import { DailyCallQualityTestResults } from "@daily-co/daily-js";
-import { Progress, Badge, DataList, Button, Box, Code } from "@radix-ui/themes";
+import {
+  Progress,
+  Badge,
+  DataList,
+  Button,
+  Box,
+  Code,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
+import RunningIndicator from "./RunningIndicator";
+import TestResults from "./TestResults";
 
 export default function CallQuality({
   callQualityResults,
@@ -130,7 +141,7 @@ export default function CallQuality({
             <DataList.Item>
               <DataList.Label minWidth="88px">Error Data</DataList.Label>
               <DataList.Value>
-                {JSON.stringify(callQualityResults.error)}
+                <Code>{JSON.stringify(callQualityResults.error, null, 4)}</Code>
               </DataList.Value>
             </DataList.Item>
           </>
@@ -142,24 +153,9 @@ export default function CallQuality({
 
   if (callQualityResults) {
     return (
-      <DataList.Root>
-        <DataList.Item>
-          <DataList.Label minWidth="88px">Result</DataList.Label>
-          <DataList.Value>
-            {resultBadge(callQualityResults.result)}
-          </DataList.Value>
-        </DataList.Item>
-        {extraData()}
-      </DataList.Root>
+      <TestResults result={callQualityResults.result} extraData={extraData} />
     );
   }
 
-  return (
-    <>
-      <Progress duration="30s" />
-      <Box style={{ textAlign: "center", marginTop: "1em" }}>
-        <Button onClick={cancelTest}>Cancel</Button>
-      </Box>
-    </>
-  );
+  return <RunningIndicator duration="30s" buttonCallback={cancelTest} />;
 }

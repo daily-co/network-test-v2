@@ -1,6 +1,8 @@
 import { DailyWebsocketConnectivityTestResults } from "@daily-co/daily-js";
 import { Progress, Badge, DataList, Button, Code, Box } from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
+import RunningIndicator from "./RunningIndicator";
+import TestResults from "./TestResults";
 
 export default function Websockets({
   websocketTestResults,
@@ -13,79 +15,56 @@ export default function Websockets({
     call?.abortTestWebsocketConnectivity();
   }
 
-  function resultBadge(
-    result: DailyWebsocketConnectivityTestResults["result"]
-  ) {
-    switch (result) {
-      case "passed":
+  function listRegions(regions: string[] | undefined) {
+    if (Array.isArray(regions) && regions.length > 0) {
+      const r = regions.map((r, i) => {
         return (
-          <Badge color="jade" variant="soft" radius="full">
-            passed
-          </Badge>
+          <>
+            <Code>{r}</Code>
+            <br />
+          </>
         );
-      case "failed":
-        return (
-          <Badge color="tomato" variant="soft" radius="full">
-            failed
-          </Badge>
-        );
-      case "warning":
-        return (
-          <Badge color="orange" variant="soft" radius="full">
-            warning
-          </Badge>
-        );
-      case "aborted":
-        return (
-          <Badge color="gray" variant="soft" radius="full">
-            canceled
-          </Badge>
-        );
-      default:
-        return (
-          <Badge color="gray" variant="soft" radius="full">
-            unknown
-          </Badge>
-        );
+      });
+      return <div>{r}</div>;
+    } else {
+      return (
+        <div>
+          <Code>none</Code>
+        </div>
+      );
     }
   }
 
-  function extraData(result: DailyWebsocketConnectivityTestResults["result"]) {
-    switch (result) {
-      case "warning":
-        const failures = websocketTestResults?.failedRegions.join(", ");
-        return (
-          <DataList.Item>
-            <DataList.Label minWidth="80px">Failed Regions</DataList.Label>
-            <DataList.Value>
-              <Code>{failures}</Code>
-            </DataList.Value>
-          </DataList.Item>
-        );
-    }
-    return <></>;
+  function extraData() {
+    return (
+      <>
+        <DataList.Item>
+          <DataList.Label minWidth="80px">Passed Regions</DataList.Label>
+          <DataList.Value>
+            {listRegions(websocketTestResults?.passedRegions)}
+          </DataList.Value>
+        </DataList.Item>
+        <DataList.Item>
+          <DataList.Label minWidth="80px">Failed Regions</DataList.Label>
+          <DataList.Value>
+            {listRegions(websocketTestResults?.failedRegions)}
+          </DataList.Value>
+        </DataList.Item>
+        <DataList.Item>
+          <DataList.Label minWidth="80px">Aborted Regions</DataList.Label>
+          <DataList.Value>
+            {listRegions(websocketTestResults?.abortedRegions)}
+          </DataList.Value>
+        </DataList.Item>
+      </>
+    );
   }
 
   if (websocketTestResults) {
     return (
-      <DataList.Root>
-        <DataList.Item>
-          <DataList.Label minWidth="88px">Result</DataList.Label>
-          <DataList.Value>
-            {resultBadge(websocketTestResults.result)}
-          </DataList.Value>
-        </DataList.Item>
-        {extraData(websocketTestResults.result)}
-      </DataList.Root>
+      <TestResults result={websocketTestResults.result} extraData={extraData} />
     );
   }
 
-  return (
-    <>
-      <Progress duration="10s" />
-      <Box style={{ textAlign: "center", marginTop: "1em" }}>
-        <Button onClick={cancelTest}>Cancel</Button>
-      </Box>
-    </>
-  );
+  return <RunningIndicator duration="10s" buttonCallback={cancelTest} />;
 }

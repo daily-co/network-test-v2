@@ -1,6 +1,15 @@
 import { DailyNetworkConnectivityTestStats } from "@daily-co/daily-js";
-import { Progress, DataList, Badge, Button, Box } from "@radix-ui/themes";
+import {
+  Progress,
+  DataList,
+  Badge,
+  Button,
+  Box,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
+import RunningIndicator from "./RunningIndicator";
 
 export default function Network({
   networkTestResults,
@@ -53,12 +62,5 @@ export default function Network({
     );
   }
 
-  return (
-    <>
-      <Progress duration="30s" />
-      <Box style={{ textAlign: "center", marginTop: "1em" }}>
-        <Button onClick={cancelTest}>Cancel</Button>
-      </Box>
-    </>
-  );
+  return <RunningIndicator duration="30s" buttonCallback={cancelTest} />;
 }
