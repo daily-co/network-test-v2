@@ -1,4 +1,4 @@
-import { Badge, Box, Text, Flex } from "@radix-ui/themes";
+import { Badge, Box, Text, Flex, BadgeProps } from "@radix-ui/themes";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as Separator from "@radix-ui/react-separator";
@@ -7,16 +7,26 @@ export interface TestResultProps {
   result: string;
   extraData?: () => JSX.Element;
 }
+
+type ColorPicker = {
+  passed: BadgeProps["color"];
+  failed: BadgeProps["color"];
+  good: BadgeProps["color"];
+  bad: BadgeProps["color"];
+  warning: BadgeProps["color"];
+};
+
 export default function TestResults({ result, extraData }: TestResultProps) {
   function resultBadge(result: string) {
-    const colors = {
+    const colors: ColorPicker = {
       passed: "jade",
       failed: "tomato",
       good: "jade",
       bad: "tomato",
       warning: "orange",
     };
-    const color = colors[result] || "gray";
+    const color: BadgeProps["color"] =
+      colors[result as keyof typeof colors] || "gray";
     return (
       <Badge color={color} variant="soft" size="3">
         <Text style={{ fontSize: "1.2em" }}>{result}</Text>
