@@ -88,7 +88,7 @@ export default function App() {
 		return <div>Starting...</div>;
 	}
 
-	// Create a reusable card layout component
+	// Create a reusable card layout component.
 	const CardLayout = () => (
 		<Flex direction={{ initial: "column", sm: "row" }} gap="3" width="100%">
 			<Box width={{ initial: "100%", sm: "33.33%" }}>
