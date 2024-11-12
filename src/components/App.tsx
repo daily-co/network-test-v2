@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useDaily } from "@daily-co/daily-react";
+import { useState } from 'react';
+import { useDaily } from '@daily-co/daily-react';
 import {
   DailyCallQualityTestResults,
   DailyNetworkConnectivityTestStats,
   DailyWebsocketConnectivityTestResults,
-} from "@daily-co/daily-js";
-import { Button, Card, Box, Flex, Heading, Section } from "@radix-ui/themes";
-import CallQuality from "./CallQuality";
-import Network from "./Network";
-import Websockets from "./Websockets";
+} from '@daily-co/daily-js';
+import { Button, Card, Box, Flex, Heading, Section } from '@radix-ui/themes';
+import CallQuality from './CallQuality';
+import Network from './Network';
+import Websockets from './Websockets';
 
 export default function App() {
   // const [appState, setAppState] = useAtom(appStateAtom);
   const [appState, setAppState] = useState<
-    | "idle"
-    | "starting"
-    | "running-network"
-    | "running-websocket"
-    | "running-call"
-    | "completed"
-  >("idle");
+    | 'idle'
+    | 'starting'
+    | 'running-network'
+    | 'running-websocket'
+    | 'running-call'
+    | 'completed'
+  >('idle');
   const [callQualityResults, setCallQualityResults] =
     useState<DailyCallQualityTestResults | null>(null);
   const [networkTestResults, setNetworkTestResults] =
@@ -41,9 +41,9 @@ export default function App() {
     );
   }
   async function start() {
-    setAppState("starting");
+    setAppState('starting');
     await call?.startCamera();
-    setAppState("running-network");
+    setAppState('running-network');
     const videoTrack = call?.participants().local.tracks.video.persistentTrack;
     if (videoTrack) {
       const nt = await call?.testNetworkConnectivity(videoTrack);
@@ -52,22 +52,22 @@ export default function App() {
       }
     }
 
-    setAppState("running-websocket");
+    setAppState('running-websocket');
     const ws = await call?.testWebsocketConnectivity();
     if (ws) {
       setWebsocketTestResults(ws);
     }
-    setAppState("running-call");
+    setAppState('running-call');
     //await call?.preAuth({ url: "https://chad-hq.daily.co/howdy" });
     const cq = await call?.testCallQuality();
     if (cq) {
       setCallQualityResults(cq);
     }
     await call?.destroy();
-    setAppState("completed");
+    setAppState('completed');
   }
 
-  if (appState === "idle") {
+  if (appState === 'idle') {
     return (
       <>
         <div>
@@ -76,141 +76,69 @@ export default function App() {
           your camera in order to provide a video stream to measure network
           performance, but your video isn&#39;t viewed or stored anywhere.
         </div>
-        <div style={{ marginTop: "2em" }}>
+        <div style={{ marginTop: '2em' }}>
           <Button onClick={start}>Run Test</Button>
         </div>
       </>
     );
   }
 
-  if (appState === "starting") {
+  if (appState === 'starting') {
     return <div>Starting...</div>;
   }
 
-  if (appState === "running-network") {
-    return (
-      <Flex gap="3">
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              WebRTC Connections
-            </Heading>
-            <Network networkTestResults={networkTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Websocket Regions
-            </Heading>
-            Waiting...
-          </Card>
-        </Box>
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Daily Call Quality
-            </Heading>
-            Waiting...
-          </Card>
-        </Box>
-      </Flex>
-    );
-  }
-
-  if (appState === "running-websocket") {
-    return (
-      <Flex gap="3">
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              WebRTC Connections
-            </Heading>
-            <Network networkTestResults={networkTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Websocket Regions
-            </Heading>
+  const CardLayout = () => (
+    <Flex direction={{ initial: 'column', sm: 'row' }} gap="3" width="100%">
+      <Box width={{ initial: '100%', sm: '33.33%' }}>
+        <Card>
+          <Heading as="h3" mb="3">
+            WebRTC Connections
+          </Heading>
+          <Network networkTestResults={networkTestResults} />
+        </Card>
+      </Box>
+      <Box width={{ initial: '100%', sm: '33.33%' }}>
+        <Card>
+          <Heading as="h3" mb="3">
+            Websocket Regions
+          </Heading>
+          {appState === 'running-network' ? (
+            'Waiting...'
+          ) : (
             <Websockets websocketTestResults={websocketTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Daily Call Quality
-            </Heading>
-            Waiting...
-          </Card>
-        </Box>
-      </Flex>
-    );
-  }
-
-  if (appState === "running-call") {
-    return (
-      <Flex gap="3">
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              WebRTC Connections
-            </Heading>
-            <Network networkTestResults={networkTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Websocket Regions
-            </Heading>
-            <Websockets websocketTestResults={websocketTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="300px" maxWidth="400px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Daily Call Quality
-            </Heading>
+          )}
+        </Card>
+      </Box>
+      <Box width={{ initial: '100%', sm: '33.33%' }}>
+        <Card>
+          <Heading as="h3" mb="3">
+            Daily Call Quality
+          </Heading>
+          {appState === 'running-network' ||
+          appState === 'running-websocket' ? (
+            'Waiting...'
+          ) : (
             <CallQuality callQualityResults={callQualityResults} />
-          </Card>
-        </Box>
-      </Flex>
-    );
+          )}
+        </Card>
+      </Box>
+    </Flex>
+  );
+
+  if (
+    appState === 'running-network' ||
+    appState === 'running-websocket' ||
+    appState === 'running-call'
+  ) {
+    return <CardLayout />;
   }
 
   return (
-    <>
-      <Flex gap="3">
-        <Box minWidth="320px" maxWidth="420px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              WebRTC Connections
-            </Heading>
-            <Network networkTestResults={networkTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="320px" maxWidth="420px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Websocket Regions
-            </Heading>
-            <Websockets websocketTestResults={websocketTestResults} />
-          </Card>
-        </Box>
-        <Box minWidth="320px" maxWidth="420px">
-          <Card>
-            <Heading as="h3" style={{ marginBottom: "1em" }}>
-              Daily Call Quality
-            </Heading>
-            <CallQuality callQualityResults={callQualityResults} />
-          </Card>
-        </Box>
-      </Flex>
-      <Section style={{ textAlign: "center" }}>
+    <Flex direction="column" gap="3">
+      <CardLayout />
+      <Section style={{ textAlign: 'center' }}>
         <Button onClick={copyResults}>Copy Full Results to Clipboard</Button>
       </Section>
-    </>
+    </Flex>
   );
 }

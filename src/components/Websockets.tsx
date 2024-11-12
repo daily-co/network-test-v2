@@ -1,8 +1,8 @@
-import { DailyWebsocketConnectivityTestResults } from "@daily-co/daily-js";
-import { DataList, Code } from "@radix-ui/themes";
-import { useDaily } from "@daily-co/daily-react";
-import RunningIndicator from "./RunningIndicator";
-import TestResults from "./TestResults";
+import { DailyWebsocketConnectivityTestResults } from '@daily-co/daily-js';
+import { DataList, Code } from '@radix-ui/themes';
+import { useDaily } from '@daily-co/daily-react';
+import RunningIndicator from './RunningIndicator';
+import TestResults from './TestResults';
 
 export default function Websockets({
   websocketTestResults,
