@@ -1,5 +1,3 @@
-/** @format */
-
 "use client";
 
 import { Provider, createStore } from "jotai";
