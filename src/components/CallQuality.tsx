@@ -1,13 +1,16 @@
 import { DailyCallQualityTestResults } from "@daily-co/daily-js";
 import { DataList, Code } from "@radix-ui/themes";
 import { useDaily } from "@daily-co/daily-react";
+import NotRun from "./NotRun";
 import RunningIndicator from "./RunningIndicator";
 import TestResults from "./TestResults";
 
 export default function CallQuality({
   callQualityResults,
+  notRun,
 }: {
   callQualityResults: DailyCallQualityTestResults | null;
+  notRun?: boolean;
 }) {
   const call = useDaily();
 
@@ -106,6 +109,10 @@ export default function CallQuality({
     return (
       <TestResults result={callQualityResults.result} extraData={extraData} />
     );
+  }
+
+  if (notRun) {
+    return <NotRun />;
   }
 
   return <RunningIndicator duration="30s" buttonCallback={cancelTest} />;

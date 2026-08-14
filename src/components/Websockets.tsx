@@ -1,13 +1,16 @@
 import { DailyWebsocketConnectivityTestResults } from '@daily-co/daily-js';
 import { DataList, Code } from '@radix-ui/themes';
 import { useDaily } from '@daily-co/daily-react';
+import NotRun from './NotRun';
 import RunningIndicator from './RunningIndicator';
 import TestResults from './TestResults';
 
 export default function Websockets({
   websocketTestResults,
+  notRun,
 }: {
   websocketTestResults: DailyWebsocketConnectivityTestResults | null;
+  notRun?: boolean;
 }) {
   const call = useDaily();
 
@@ -63,6 +66,10 @@ export default function Websockets({
     return (
       <TestResults result={websocketTestResults.result} extraData={extraData} />
     );
+  }
+
+  if (notRun) {
+    return <NotRun />;
   }
 
   return <RunningIndicator duration="10s" buttonCallback={cancelTest} />;
