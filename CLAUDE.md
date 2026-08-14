@@ -33,7 +33,7 @@ The whole flow lives in one state machine in `src/components/App.tsx`. `appState
 
 `App.tsx` additionally shows the literal string "Waiting..." for cards whose test has not started yet, so a card can be in three visual states even though only two live in the child component.
 
-When every test is done, `hasNetworkIssue()` decides whether to render `FirewallNotice`. It treats anything other than `passed` / `good` as a problem, including `warning`, `aborted`, and a `null` result. Catching `warning` is deliberate: the websocket test returns it when only some regions connect, which is the usual signature of a partly blocked firewall.
+When every test is done, `hasNetworkIssue()` decides whether to render `FirewallNotice`. It treats `failed`, `warning`, and `bad` as a problem; it deliberately does not fire on `aborted` or on a `null` result. Catching `warning` is deliberate: the websocket test returns it when only some regions connect, which is the usual signature of a partly blocked firewall.
 
 `CardLayout` is declared at module scope, not inside `App`. Keep it there. Defining it inside the component recreates it on every render, which remounts the cards and throws away the open/closed state of the details disclosures.
 
