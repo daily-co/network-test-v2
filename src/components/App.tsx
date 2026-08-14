@@ -9,19 +9,83 @@ import {
 } from '@daily-co/daily-js';
 import { Button, Card, Box, Flex, Heading, Section } from '@radix-ui/themes';
 import CallQuality from './CallQuality';
+import FirewallNotice from './FirewallNotice';
 import Network from './Network';
 import Websockets from './Websockets';
 
+type AppState =
+  | 'idle'
+  | 'starting'
+  | 'running-network'
+  | 'running-websocket'
+  | 'running-call'
+  | 'completed';
+
+// Anything other than these means the user hit some kind of network problem.
+// That includes 'warning' (some websocket regions blocked), 'aborted', and a
+// null result, which happens when a test never produced one.
+const CLEAN_RESULTS = ['passed', 'good'];
+
+function hasNetworkIssue(...results: Array<{ result: string } | null>) {
+  return results.some((r) => !r || !CLEAN_RESULTS.includes(r.result));
+}
+
+// Declared outside App so it isn't recreated on every render. Recreating it
+// remounts the cards, which throws away the open/closed state of the details
+// disclosures inside them.
+function CardLayout({
+  appState,
+  networkTestResults,
+  websocketTestResults,
+  callQualityResults,
+}: {
+  appState: AppState;
+  networkTestResults: DailyNetworkConnectivityTestStats | null;
+  websocketTestResults: DailyWebsocketConnectivityTestResults | null;
+  callQualityResults: DailyCallQualityTestResults | null;
+}) {
+  return (
+    <Flex direction={{ initial: 'column', sm: 'row' }} gap="3" width="100%">
+      <Box width={{ initial: '100%', sm: '33.33%' }}>
+        <Card>
+          <Heading as="h3" mb="3">
+            WebRTC Connections
+          </Heading>
+          <Network networkTestResults={networkTestResults} />
+        </Card>
+      </Box>
+      <Box width={{ initial: '100%', sm: '33.33%' }}>
+        <Card>
+          <Heading as="h3" mb="3">
+            Websocket Regions
+          </Heading>
+          {appState === 'running-network' ? (
+            'Waiting...'
+          ) : (
+            <Websockets websocketTestResults={websocketTestResults} />
+          )}
+        </Card>
+      </Box>
+      <Box width={{ initial: '100%', sm: '33.33%' }}>
+        <Card>
+          <Heading as="h3" mb="3">
+            Daily Call Quality
+          </Heading>
+          {appState === 'running-network' ||
+          appState === 'running-websocket' ? (
+            'Waiting...'
+          ) : (
+            <CallQuality callQualityResults={callQualityResults} />
+          )}
+        </Card>
+      </Box>
+    </Flex>
+  );
+}
+
 export default function App() {
   // const [appState, setAppState] = useAtom(appStateAtom);
-  const [appState, setAppState] = useState<
-    | 'idle'
-    | 'starting'
-    | 'running-network'
-    | 'running-websocket'
-    | 'running-call'
-    | 'completed'
-  >('idle');
+  const [appState, setAppState] = useState<AppState>('idle');
   const [callQualityResults, setCallQualityResults] =
     useState<DailyCallQualityTestResults | null>(null);
   const [networkTestResults, setNetworkTestResults] =
@@ -87,42 +151,13 @@ export default function App() {
     return <div>Starting...</div>;
   }
 
-  const CardLayout = () => (
-    <Flex direction={{ initial: 'column', sm: 'row' }} gap="3" width="100%">
-      <Box width={{ initial: '100%', sm: '33.33%' }}>
-        <Card>
-          <Heading as="h3" mb="3">
-            WebRTC Connections
-          </Heading>
-          <Network networkTestResults={networkTestResults} />
-        </Card>
-      </Box>
-      <Box width={{ initial: '100%', sm: '33.33%' }}>
-        <Card>
-          <Heading as="h3" mb="3">
-            Websocket Regions
-          </Heading>
-          {appState === 'running-network' ? (
-            'Waiting...'
-          ) : (
-            <Websockets websocketTestResults={websocketTestResults} />
-          )}
-        </Card>
-      </Box>
-      <Box width={{ initial: '100%', sm: '33.33%' }}>
-        <Card>
-          <Heading as="h3" mb="3">
-            Daily Call Quality
-          </Heading>
-          {appState === 'running-network' ||
-          appState === 'running-websocket' ? (
-            'Waiting...'
-          ) : (
-            <CallQuality callQualityResults={callQualityResults} />
-          )}
-        </Card>
-      </Box>
-    </Flex>
+  const cards = (
+    <CardLayout
+      appState={appState}
+      networkTestResults={networkTestResults}
+      websocketTestResults={websocketTestResults}
+      callQualityResults={callQualityResults}
+    />
   );
 
   if (
@@ -130,12 +165,17 @@ export default function App() {
     appState === 'running-websocket' ||
     appState === 'running-call'
   ) {
-    return <CardLayout />;
+    return cards;
   }
 
   return (
     <Flex direction="column" gap="3">
-      <CardLayout />
+      {cards}
+      {hasNetworkIssue(
+        networkTestResults,
+        websocketTestResults,
+        callQualityResults
+      ) && <FirewallNotice />}
       <Section style={{ textAlign: 'center' }}>
         <Button onClick={copyResults}>Copy Full Results to Clipboard</Button>
       </Section>

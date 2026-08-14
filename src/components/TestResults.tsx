@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Badge, Box, Text, Flex, BadgeProps } from '@radix-ui/themes';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
@@ -5,7 +6,7 @@ import * as Separator from '@radix-ui/react-separator';
 
 export interface TestResultProps {
   result: string;
-  extraData?: () => JSX.Element;
+  extraData?: () => ReactNode;
 }
 
 type ColorPicker = {
